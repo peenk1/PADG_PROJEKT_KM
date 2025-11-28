@@ -1,17 +1,17 @@
 from tkinter import *
+from padg_lib import map_service
 
 # ===== USTAWIENIA OGÓLNE OKNA ===================================
 
-BG = "#f5f5f5"       # tło aplikacji
-PANEL_BG = "#ffffff" # tło paneli
-BTN_BG = "#e0e0e0"
+BG = "#B8EDFD"       # tło aplikacji
+PANEL_BG = "#92DCF2" # tło paneli
+BTN_BG = "#e0e0e1"
 
 root = Tk()
 root.title("Jedzonko")
-root.geometry("1200x700")
+root.geometry("1920x1080")
 root.configure(bg=BG)
 
-# siatka główna: 2 wiersze (góra: listy+formularze, dół: mapa)
 root.columnconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)
 root.columnconfigure(2, weight=1)
@@ -28,6 +28,13 @@ top_frame.columnconfigure(0, weight=1)
 top_frame.columnconfigure(1, weight=1)
 top_frame.columnconfigure(2, weight=1)
 top_frame.columnconfigure(3, weight=1)
+
+# ===== DOLNY OBSZAR - MAPA ======================================
+
+ramka_mapa = Frame(root, bg="#e0f7fa")
+ramka_mapa.grid(row=1, column=0, columnspan=6, sticky="nsew", padx=15, pady=15)
+
+map_service.init_map(ramka_mapa)
 
 # ===== FUNKCJE FORMULARZY =======================================
 
