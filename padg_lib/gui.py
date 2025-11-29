@@ -1,5 +1,7 @@
 from tkinter import *
+from tkinter import ttk
 from padg_lib import map_service
+from padg_lib.model import *
 
 # ===== USTAWIENIA OGÓLNE OKNA ===================================
 
@@ -46,10 +48,6 @@ def formularz_restauracja():
     entry_nazwa = Entry(okno, width=30)
     entry_nazwa.grid(row=0, column=1, padx=5, pady=5)
 
-    Label(okno, text="Adres:").grid(row=1, column=0, sticky="w", padx=5, pady=5)
-    entry_adres = Entry(okno, width=30)
-    entry_adres.grid(row=1, column=1, padx=5, pady=5)
-
     Label(okno, text="Lat:").grid(row=2, column=0, sticky="w", padx=5, pady=5)
     entry_lat = Entry(okno, width=30)
     entry_lat.grid(row=2, column=1, padx=5, pady=5)
@@ -59,13 +57,13 @@ def formularz_restauracja():
     entry_lon.grid(row=3, column=1, padx=5, pady=5)
 
     def dodaj_restauracje():
-        print(
-            "Nowa restauracja:",
+        r = Restauracja(
             entry_nazwa.get(),
-            entry_adres.get(),
             entry_lat.get(),
             entry_lon.get()
         )
+        lista_restauracji.append(r)
+        listbox_lista_restauracji.insert(END, r.nazwa)
         okno.destroy()
 
     Button(okno, text="Dodaj", command=dodaj_restauracje).grid(
@@ -86,8 +84,21 @@ def formularz_pracownik():
     entry_nazwisko.grid(row=1, column=1, padx=5, pady=5)
 
     Label(okno, text="Restauracja:").grid(row=2, column=0, sticky="w", padx=5, pady=5)
-    entry_restauracja = Entry(okno, width=30)
-    entry_restauracja.grid(row=2, column=1, padx=5, pady=5)
+
+    nazwy_restauracji = [r.nazwa for r in lista_restauracji]
+
+    combo_restauracja = ttk.Combobox(
+        okno,
+        values=nazwy_restauracji,
+        state="readonly",
+        width=28
+    )
+    combo_restauracja.grid(row=2, column=1, padx=5, pady=5)
+
+    if nazwy_restauracji:
+        combo_restauracja.current(0)
+    else:
+        combo_restauracja.config(state="disabled")
 
     Label(okno, text="Lat:").grid(row=3, column=0, sticky="w", padx=5, pady=5)
     entry_lat = Entry(okno, width=30)
@@ -98,14 +109,15 @@ def formularz_pracownik():
     entry_lon.grid(row=4, column=1, padx=5, pady=5)
 
     def dodaj_pracownika():
-        print(
-            "Nowy pracownik:",
+        r = Pracownik(
             entry_imie.get(),
             entry_nazwisko.get(),
-            entry_restauracja.get(),
+            combo_restauracja.get(),
             entry_lat.get(),
             entry_lon.get()
         )
+        lista_pracownikow.append(r)
+        listbox_lista_pracownikow.insert(END, f"{r.imie} {r.nazwisko} {r.restauracja}")
         okno.destroy()
 
     Button(okno, text="Dodaj", command=dodaj_pracownika).grid(
@@ -125,13 +137,22 @@ def formularz_klient():
     entry_nazwisko = Entry(okno, width=30)
     entry_nazwisko.grid(row=1, column=1, padx=5, pady=5)
 
-    Label(okno, text="Adres:").grid(row=2, column=0, sticky="w", padx=5, pady=5)
-    entry_adres = Entry(okno, width=30)
-    entry_adres.grid(row=2, column=1, padx=5, pady=5)
+    Label(okno, text="Restauracja:").grid(row=2, column=0, sticky="w", padx=5, pady=5)
 
-    Label(okno, text="Restauracja:").grid(row=3, column=0, sticky="w", padx=5, pady=5)
-    entry_restauracja = Entry(okno, width=30)
-    entry_restauracja.grid(row=3, column=1, padx=5, pady=5)
+    nazwy_restauracji = [r.nazwa for r in lista_restauracji]
+
+    combo_restauracja = ttk.Combobox(
+        okno,
+        values=nazwy_restauracji,
+        state="readonly",
+        width=28
+    )
+    combo_restauracja.grid(row=2, column=1, padx=5, pady=5)
+
+    if nazwy_restauracji:
+        combo_restauracja.current(0)
+    else:
+        combo_restauracja.config(state="disabled")
 
     Label(okno, text="Lat:").grid(row=4, column=0, sticky="w", padx=5, pady=5)
     entry_lat = Entry(okno, width=30)
@@ -142,15 +163,15 @@ def formularz_klient():
     entry_lon.grid(row=5, column=1, padx=5, pady=5)
 
     def dodaj_klienta():
-        print(
-            "Nowy klient:",
+        r = Klient(
             entry_imie.get(),
             entry_nazwisko.get(),
-            entry_adres.get(),
-            entry_restauracja.get(),
+            combo_restauracja.get(),
             entry_lat.get(),
             entry_lon.get()
         )
+        lista_klientow.append(r)
+        listbox_lista_klientow.insert(END, f"{r.imie} {r.nazwisko} {r.restauracja}")
         okno.destroy()
 
     Button(okno, text="Dodaj", command=dodaj_klienta).grid(
