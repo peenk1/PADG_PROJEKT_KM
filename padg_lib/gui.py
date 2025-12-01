@@ -11,7 +11,7 @@ BTN_BG = "#e0e0e1"
 
 root = Tk()
 root.title("Jedzonko")
-root.geometry("1920x1080")
+root.geometry("1220x960")
 root.configure(bg=BG)
 
 root.columnconfigure(0, weight=1)
@@ -36,7 +36,7 @@ top_frame.columnconfigure(3, weight=1)
 ramka_mapa = Frame(root, bg="#e0f7fa")
 ramka_mapa.grid(row=1, column=0, columnspan=6, sticky="nsew", padx=15, pady=15)
 
-map_service.init_map(ramka_mapa)
+map_widget = map_service.init_map(ramka_mapa)
 
 # ===== FUNKCJE FORMULARZY =======================================
 
@@ -64,6 +64,7 @@ def formularz_restauracja():
         )
         lista_restauracji.append(r)
         listbox_lista_restauracji.insert(END, r.nazwa)
+        map_service.add_marker(map_widget, float(r.lat), float(r.lon), r.nazwa)
         okno.destroy()
 
     Button(okno, text="Dodaj", command=dodaj_restauracje).grid(
@@ -119,6 +120,7 @@ def formularz_pracownik():
         )
         lista_pracownikow.append(r)
         listbox_lista_pracownikow.insert(END, f"{r.imie} {r.nazwisko} {r.restauracja}")
+        map_service.add_marker(map_widget, float(r.lat), float(r.lon),f"{r.imie} {r.nazwisko}")
         okno.destroy()
 
     Button(okno, text="Dodaj", command=dodaj_pracownika).grid(
@@ -173,6 +175,7 @@ def formularz_klient():
         )
         lista_klientow.append(r)
         listbox_lista_klientow.insert(END, f"{r.imie} {r.nazwisko} {r.restauracja}")
+        map_service.add_marker(map_widget, float(r.lat), float(r.lon),f"{r.imie} {r.nazwisko}")
         okno.destroy()
 
     Button(okno, text="Dodaj", command=dodaj_klienta).grid(
