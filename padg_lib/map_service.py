@@ -12,5 +12,13 @@ def init_map(parent_frame):
     map_widget.grid(row=0, column=0, sticky="nsew")
     return map_widget
 
-def add_marker(widget, lat, lon, text):
-    return widget.set_marker(lat, lon, text=text)
+def add_restaurant_marker(widget, lat, lon, text):
+    return widget.set_marker(lat, lon, text=text, marker_color_circle="red", marker_color_outside="darkred")
+
+
+def add_employee_marker(widget, lat, lon, text):
+    return widget.set_marker(lat, lon, text=text, marker_color_circle="blue", marker_color_outside="navy")
+
+
+def add_client_marker(widget, lat, lon, text):
+    return widget.set_marker(lat, lon, text=text, marker_color_circle="green", marker_color_outside="darkgreen")

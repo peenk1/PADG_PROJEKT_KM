@@ -64,7 +64,7 @@ def formularz_restauracja():
         )
         lista_restauracji.append(r)
         listbox_lista_restauracji.insert(END, r.nazwa)
-        map_service.add_marker(map_widget, float(r.lat), float(r.lon), r.nazwa)
+        map_service.add_restaurant_marker(map_widget, float(r.lat), float(r.lon), r.nazwa)
         okno.destroy()
 
     Button(okno, text="Dodaj", command=dodaj_restauracje).grid(
@@ -120,7 +120,7 @@ def formularz_pracownik():
         )
         lista_pracownikow.append(r)
         listbox_lista_pracownikow.insert(END, f"{r.imie} {r.nazwisko} {r.restauracja}")
-        map_service.add_marker(map_widget, float(r.lat), float(r.lon),f"{r.imie} {r.nazwisko}")
+        map_service.add_employee_marker(map_widget, float(r.lat), float(r.lon),f"{r.imie} {r.nazwisko}")
         okno.destroy()
 
     Button(okno, text="Dodaj", command=dodaj_pracownika).grid(
@@ -175,7 +175,7 @@ def formularz_klient():
         )
         lista_klientow.append(r)
         listbox_lista_klientow.insert(END, f"{r.imie} {r.nazwisko} {r.restauracja}")
-        map_service.add_marker(map_widget, float(r.lat), float(r.lon),f"{r.imie} {r.nazwisko}")
+        map_service.add_client_marker(map_widget, float(r.lat), float(r.lon),f"{r.imie} {r.nazwisko}")
         okno.destroy()
 
     Button(okno, text="Dodaj", command=dodaj_klienta).grid(
