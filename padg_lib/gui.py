@@ -82,6 +82,80 @@ def szczegoly_klienta():
     map_widget.set_zoom(15)
 
 
+# ===== FUNKCJE USUWANIA =========================================
+
+def usun_restauracja():
+    idx = listbox_lista_restauracji.curselection()
+    if not idx:
+        return
+
+    idx = idx[0]
+    r = lista_restauracji[idx]
+
+    # Usuń marker z mapy
+    if r in markery_restauracji:
+        markery_restauracji[r].delete()
+        del markery_restauracji[r]
+
+    # Odepnij restaurację od pracowników i klientów
+    for p in lista_pracownikow:
+        if p.restauracja == r.nazwa:
+            p.restauracja = ""
+
+    for k in lista_klientow:
+        if k.restauracja == r.nazwa:
+            k.restauracja = ""
+
+    # Odśwież listboxy pracowników i klientów
+    listbox_lista_pracownikow.delete(0, END)
+    for p in lista_pracownikow:
+        listbox_lista_pracownikow.insert(END, f"{p.imie} {p.nazwisko} {p.restauracja}")
+
+    listbox_lista_klientow.delete(0, END)
+    for k in lista_klientow:
+        listbox_lista_klientow.insert(END, f"{k.imie} {k.nazwisko} {k.restauracja}")
+
+    # Usuń z listy i listboxa
+    lista_restauracji.pop(idx)
+    listbox_lista_restauracji.delete(idx)
+
+
+def usun_pracownika():
+    idx = listbox_lista_pracownikow.curselection()
+    if not idx:
+        return
+
+    idx = idx[0]
+    p = lista_pracownikow[idx]
+
+    # Usuń marker z mapy
+    if p in markery_pracownikow:
+        markery_pracownikow[p].delete()
+        del markery_pracownikow[p]
+
+    # Usuń z listy i listboxa
+    lista_pracownikow.pop(idx)
+    listbox_lista_pracownikow.delete(idx)
+
+
+def usun_klienta():
+    idx = listbox_lista_klientow.curselection()
+    if not idx:
+        return
+
+    idx = idx[0]
+    k = lista_klientow[idx]
+
+    # Usuń marker z mapy
+    if k in markery_klientow:
+        markery_klientow[k].delete()
+        del markery_klientow[k]
+
+    # Usuń z listy i listboxa
+    lista_klientow.pop(idx)
+    listbox_lista_klientow.delete(idx)
+
+
 # ===== FUNKCJE FORMULARZY =======================================
 
 def formularz_restauracja():
@@ -474,7 +548,7 @@ button_restauracja_szczegoly.grid(row=1, column=0, padx=2)
 button_restauracja_edytuj = Button(ramka_lista_restauracji, text="Edytuj", bg=BTN_BG, command=edytuj_restauracja)
 button_restauracja_edytuj.grid(row=1, column=1, padx=2)
 
-button_restauracja_usun = Button(ramka_lista_restauracji, text="Usuń", bg=BTN_BG)
+button_restauracja_usun = Button(ramka_lista_restauracji, text="Usuń", bg=BTN_BG, command=usun_restauracja)
 button_restauracja_usun.grid(row=1, column=2, padx=2)
 
 # --- Lista pracowników ---
@@ -492,7 +566,7 @@ button_pracownik_szczegoly.grid(row=1, column=0, padx=2)
 button_pracownik_edytuj = Button(ramka_lista_pracownikow, text="Edytuj", bg=BTN_BG, command=edytuj_pracownika)
 button_pracownik_edytuj.grid(row=1, column=1, padx=2)
 
-button_pracownik_usun = Button(ramka_lista_pracownikow, text="Usuń", bg=BTN_BG)
+button_pracownik_usun = Button(ramka_lista_pracownikow, text="Usuń", bg=BTN_BG, command=usun_pracownika)
 button_pracownik_usun.grid(row=1, column=2, padx=2)
 
 # --- Lista klientów ---
@@ -510,7 +584,7 @@ button_klient_szczegoly.grid(row=1, column=0, padx=2)
 button_klient_edytuj = Button(ramka_lista_klientow, text="Edytuj", bg=BTN_BG, command=edytuj_klienta)
 button_klient_edytuj.grid(row=1, column=1, padx=2)
 
-button_klient_usun = Button(ramka_lista_klientow, text="Usuń", bg=BTN_BG)
+button_klient_usun = Button(ramka_lista_klientow, text="Usuń", bg=BTN_BG, command=usun_klienta)
 button_klient_usun.grid(row=1, column=2, padx=2)
 
 # --- Panel formularzy ---
