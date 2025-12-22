@@ -44,6 +44,44 @@ markery_pracownikow = {}
 markery_klientow = {}
 
 
+# ===== FUNKCJE SZCZEGÓŁÓW =======================================
+
+def szczegoly_restauracja():
+    idx = listbox_lista_restauracji.curselection()
+    if not idx:
+        return
+
+    idx = idx[0]
+    r = lista_restauracji[idx]
+
+    map_widget.set_position(float(r.lat), float(r.lon))
+    map_widget.set_zoom(15)
+
+
+def szczegoly_pracownika():
+    idx = listbox_lista_pracownikow.curselection()
+    if not idx:
+        return
+
+    idx = idx[0]
+    p = lista_pracownikow[idx]
+
+    map_widget.set_position(float(p.lat), float(p.lon))
+    map_widget.set_zoom(15)
+
+
+def szczegoly_klienta():
+    idx = listbox_lista_klientow.curselection()
+    if not idx:
+        return
+
+    idx = idx[0]
+    k = lista_klientow[idx]
+
+    map_widget.set_position(float(k.lat), float(k.lon))
+    map_widget.set_zoom(15)
+
+
 # ===== FUNKCJE FORMULARZY =======================================
 
 def formularz_restauracja():
@@ -429,7 +467,8 @@ ramka_lista_restauracji.grid(row=0, column=0, sticky="nsew", padx=10)
 listbox_lista_restauracji = Listbox(ramka_lista_restauracji, width=25, height=15)
 listbox_lista_restauracji.grid(row=0, column=0, columnspan=3, pady=(0, 10))
 
-button_restauracja_szczegoly = Button(ramka_lista_restauracji, text="Szczegóły", bg=BTN_BG)
+button_restauracja_szczegoly = Button(ramka_lista_restauracji, text="Szczegóły", bg=BTN_BG,
+                                      command=szczegoly_restauracja)
 button_restauracja_szczegoly.grid(row=1, column=0, padx=2)
 
 button_restauracja_edytuj = Button(ramka_lista_restauracji, text="Edytuj", bg=BTN_BG, command=edytuj_restauracja)
@@ -447,7 +486,7 @@ ramka_lista_pracownikow.grid(row=0, column=1, sticky="nsew", padx=10)
 listbox_lista_pracownikow = Listbox(ramka_lista_pracownikow, width=25, height=15)
 listbox_lista_pracownikow.grid(row=0, column=0, columnspan=3, pady=(0, 10))
 
-button_pracownik_szczegoly = Button(ramka_lista_pracownikow, text="Szczegóły", bg=BTN_BG)
+button_pracownik_szczegoly = Button(ramka_lista_pracownikow, text="Szczegóły", bg=BTN_BG, command=szczegoly_pracownika)
 button_pracownik_szczegoly.grid(row=1, column=0, padx=2)
 
 button_pracownik_edytuj = Button(ramka_lista_pracownikow, text="Edytuj", bg=BTN_BG, command=edytuj_pracownika)
@@ -465,7 +504,7 @@ ramka_lista_klientow.grid(row=0, column=2, sticky="nsew", padx=10)
 listbox_lista_klientow = Listbox(ramka_lista_klientow, width=25, height=15)
 listbox_lista_klientow.grid(row=0, column=0, columnspan=3, pady=(0, 10))
 
-button_klient_szczegoly = Button(ramka_lista_klientow, text="Szczegóły", bg=BTN_BG)
+button_klient_szczegoly = Button(ramka_lista_klientow, text="Szczegóły", bg=BTN_BG, command=szczegoly_klienta)
 button_klient_szczegoly.grid(row=1, column=0, padx=2)
 
 button_klient_edytuj = Button(ramka_lista_klientow, text="Edytuj", bg=BTN_BG, command=edytuj_klienta)
