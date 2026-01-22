@@ -3,6 +3,47 @@ from tkinter import ttk
 from padg_lib.model import lista_restauracji
 
 
+class FilterForm:
+    def __init__(self, parent, filter_controller):
+        self.okno = Toplevel(parent)
+        self.okno.title("Filtruj markery")
+        self.filter_ctrl = filter_controller
+
+        Label(self.okno, text="Typ:").grid(row=0, column=0, sticky="w", padx=5, pady=5)
+        self.combo_typ = ttk.Combobox(
+            self.okno,
+            values=["pracownicy", "klienci"],
+            state="readonly",
+            width=28
+        )
+        self.combo_typ.grid(row=0, column=1, padx=5, pady=5)
+        self.combo_typ.current(0)
+
+        Label(self.okno, text="Restauracja:").grid(row=1, column=0, sticky="w", padx=5, pady=5)
+        nazwy = ["Wszystkie"] + [r.nazwa for r in lista_restauracji]
+        self.combo_restauracja = ttk.Combobox(
+            self.okno,
+            values=nazwy,
+            state="readonly",
+            width=28
+        )
+        self.combo_restauracja.grid(row=1, column=1, padx=5, pady=5)
+        self.combo_restauracja.current(0)
+
+        Button(self.okno, text="Zastosuj", command=self.zastosuj).grid(row=2, column=0, pady=10)
+        Button(self.okno, text="Pokaż wszystkie", command=self.pokaz_wszystkie).grid(row=2, column=1, pady=10)
+
+    def zastosuj(self):
+        typ = self.combo_typ.get()
+        restauracja = self.combo_restauracja.get()
+        self.filter_ctrl.filtruj(typ, restauracja)
+        self.okno.destroy()
+
+    def pokaz_wszystkie(self):
+        self.filter_ctrl.pokaz_wszystkie()
+        self.okno.destroy()
+
+
 class RestauracjaForm:
     def __init__(self, parent, controller, edit_mode=False, idx=None, restauracja=None):
         self.okno = Toplevel(parent)

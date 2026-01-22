@@ -1,10 +1,11 @@
+
 from tkinter import *
 from padg_lib import map_service
 from padg_lib.model import lista_restauracji, lista_pracownikow, lista_klientow
-from padg_lib.controller import RestauracjaController, PracownikController, KlientController
-from padg_lib.forms import RestauracjaForm, PracownikForm, KlientForm
+from padg_lib.controller import RestauracjaController, PracownikController, KlientController, MapFilterController
+from padg_lib.forms import RestauracjaForm, PracownikForm, KlientForm, FilterForm
 
-# ===== USTAWIENIA OGÓLNE OKNA =======
+# ===== USTAWIENIA OGÓLNE OKNA ===================================
 
 BG = "#B8EDFD"
 PANEL_BG = "#92DCF2"
@@ -22,7 +23,7 @@ root.columnconfigure(3, weight=1)
 root.rowconfigure(0, weight=3)
 root.rowconfigure(1, weight=2)
 
-# ===== GÓRNY OBSZAR ========
+# ===== GÓRNY OBSZAR =============================================
 
 top_frame = Frame(root, bg=BG)
 top_frame.grid(row=0, column=0, columnspan=4, sticky="nsew", padx=20, pady=20)
@@ -32,14 +33,14 @@ top_frame.columnconfigure(1, weight=1)
 top_frame.columnconfigure(2, weight=1)
 top_frame.columnconfigure(3, weight=1)
 
-# ===== DOLNY OBSZAR - MAPA ========
+# ===== DOLNY OBSZAR - MAPA ======================================
 
 ramka_mapa = Frame(root, bg="#e0f7fa")
 ramka_mapa.grid(row=1, column=0, columnspan=6, sticky="nsew", padx=15, pady=15)
 
 map_widget = map_service.init_map(ramka_mapa)
 
-# ===== PANELE LIST =======
+# ===== PANELE LIST =======================================
 
 # --- Lista restauracji ---
 ramka_lista_restauracji = LabelFrame(
@@ -68,7 +69,7 @@ ramka_lista_klientow.grid(row=0, column=2, sticky="nsew", padx=10)
 listbox_lista_klientow = Listbox(ramka_lista_klientow, width=25, height=15)
 listbox_lista_klientow.grid(row=0, column=0, columnspan=3, pady=(0, 10))
 
-# ======= KONTROLERY ========
+# ===== KONTROLERY ===============================================
 
 restauracja_ctrl = RestauracjaController(
     map_widget,
@@ -79,8 +80,12 @@ restauracja_ctrl = RestauracjaController(
 
 pracownik_ctrl = PracownikController(map_widget, listbox_lista_pracownikow)
 klient_ctrl = KlientController(map_widget, listbox_lista_klientow)
+filter_ctrl = MapFilterController(map_widget)
 
-# ======= FUNKCJE CALLBACKS ==============
+# ===== FUNKCJE CALLBACKS ========================================
+
+def filtruj_markery():
+    FilterForm(root, filter_ctrl)
 
 # Restauracje
 def dodaj_restauracje():
@@ -142,7 +147,7 @@ def szczegoly_klienta():
     if idx:
         klient_ctrl.pokaz_na_mapie(idx[0])
 
-# ===== PRZYCISKI ======
+# ===== PRZYCISKI ================================================
 
 # Przyciski restauracji
 Button(ramka_lista_restauracji, text="Szczegóły", bg=BTN_BG, command=szczegoly_restauracji).grid(row=1, column=0, padx=2)
@@ -168,6 +173,7 @@ ramka_formularz.grid(row=0, column=3, sticky="n", padx=10)
 Button(ramka_formularz, text="Dodaj restaurację", width=18, command=dodaj_restauracje, bg=BTN_BG).grid(row=0, column=0, pady=5)
 Button(ramka_formularz, text="Dodaj pracownika", width=18, command=dodaj_pracownika, bg=BTN_BG).grid(row=1, column=0, pady=5)
 Button(ramka_formularz, text="Dodaj klienta", width=18, command=dodaj_klienta, bg=BTN_BG).grid(row=2, column=0, pady=5)
+Button(ramka_formularz, text="Filtruj markery", width=18, command=filtruj_markery, bg=BTN_BG).grid(row=3, column=0, pady=5)
 
 def run_app():
     root.mainloop()
