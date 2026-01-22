@@ -7,6 +7,74 @@ markery_pracownikow = {}
 markery_klientow = {}
 
 
+class MapFilterController:
+    def __init__(self, map_widget):
+        self.map_widget = map_widget
+
+    def filtruj(self, typ, restauracja):
+
+        # Usuń wszystkie markery
+        for marker in markery_restauracji.values():
+            marker.delete()
+        markery_restauracji.clear()
+
+        for marker in markery_pracownikow.values():
+            marker.delete()
+        markery_pracownikow.clear()
+
+        for marker in markery_klientow.values():
+            marker.delete()
+        markery_klientow.clear()
+
+        # Dodaj restauracje (wszystkie lub tylko wybraną)
+        for r in lista_restauracji:
+            if restauracja == "Wszystkie" or r.nazwa == restauracja:
+                marker = map_service.add_restaurant_marker(
+                    self.map_widget, float(r.lat), float(r.lon), r.nazwa
+                )
+                markery_restauracji[r] = marker
+
+        # Dodaj pracowników/klientów według filtru
+        if typ == "pracownicy":
+            for p in lista_pracownikow:
+                if restauracja == "Wszystkie" or p.restauracja == restauracja:
+                    marker = map_service.add_employee_marker(
+                        self.map_widget, float(p.lat), float(p.lon), f"{p.imie} {p.nazwisko}"
+                    )
+                    markery_pracownikow[p] = marker
+
+        elif typ == "klienci":
+            for k in lista_klientow:
+                if restauracja == "Wszystkie" or k.restauracja == restauracja:
+                    marker = map_service.add_client_marker(
+                        self.map_widget, float(k.lat), float(k.lon), f"{k.imie} {k.nazwisko}"
+                    )
+                    markery_klientow[k] = marker
+
+    def pokaz_wszystkie(self):
+
+        for r in lista_restauracji:
+            if r not in markery_restauracji:
+                marker = map_service.add_restaurant_marker(
+                    self.map_widget, float(r.lat), float(r.lon), r.nazwa
+                )
+                markery_restauracji[r] = marker
+
+        for p in lista_pracownikow:
+            if p not in markery_pracownikow:
+                marker = map_service.add_employee_marker(
+                    self.map_widget, float(p.lat), float(p.lon), f"{p.imie} {p.nazwisko}"
+                )
+                markery_pracownikow[p] = marker
+
+        for k in lista_klientow:
+            if k not in markery_klientow:
+                marker = map_service.add_client_marker(
+                    self.map_widget, float(k.lat), float(k.lon), f"{k.imie} {k.nazwisko}"
+                )
+                markery_klientow[k] = marker
+
+
 class RestauracjaController:
     def __init__(self, map_widget, listbox_restauracji, listbox_pracownikow, listbox_klientow):
         self.map_widget = map_widget
